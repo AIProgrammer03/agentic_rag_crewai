@@ -12,11 +12,11 @@ load_dotenv()
 
 class DocumentSearchToolInput(BaseModel):
     """Input schema for DocumentSearchTool."""
-    query: str = Field(..., description="Query to search the document.")
+    query: dict = Field(..., description="Query to search the document. Must contain a 'query' key with the query string.")
 
 class DocumentSearchTool(BaseTool):
     name: str = "DocumentSearchTool"
-    description: str = "Search the document for the given query."
+    description: str = "Search the document for the given query string."
     args_schema: Type[BaseModel] = DocumentSearchToolInput
     
     model_config = ConfigDict(extra="allow")
@@ -64,8 +64,9 @@ class DocumentSearchTool(BaseTool):
             ids=ids
         )
 
-    def _run(self, query: str) -> list:
+    def _run(self, query: dict) -> list:
         """Search the document with a query string."""
+        query = query['query']
         relevant_chunks = self.client.query(
             collection_name="demo_collection",
             query_text=query
