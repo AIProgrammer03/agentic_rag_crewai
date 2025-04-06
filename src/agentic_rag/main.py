@@ -22,7 +22,7 @@ def run():
     print("Starting CrewAI RAG System...")
     print("="*50)
 
-    query = 'Who is elon musk?'
+    query = 'Who is Elon musk and what is his net worth?'
     print(f"\nProcessing query: '{query}'")
     print("-"*50)
 
