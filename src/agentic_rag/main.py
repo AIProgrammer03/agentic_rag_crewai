@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 import sys
 import warnings
+import time
+import json
+from datetime import datetime
 
 from agentic_rag.crew import AgenticRag
 
@@ -15,44 +18,41 @@ def run():
     """
     Run the crew.
     """
-    inputs = {
-        'query': 'Who is elon musk?'
-    }
-    AgenticRag().crew().kickoff(inputs=inputs)
+    print("\n" + "="*50)
+    print("Starting CrewAI RAG System...")
+    print("="*50)
 
+    query = 'Who is elon musk?'
+    print(f"\nProcessing query: '{query}'")
+    print("-"*50)
 
-def train():
-    """
-    Train the crew for a given number of iterations.
-    """
     inputs = {
-        "topic": "AI LLMs"
+        'query': query
     }
+
     try:
-        AgenticRag().crew().train(n_iterations=int(sys.argv[1]), filename=sys.argv[2], inputs=inputs)
+        print("\nInitializing crew and executing query...")
+        result = AgenticRag().crew().kickoff(inputs=inputs)
+        
+        print("\nRESULTS:")
+        print("-"*50)
+        print(result)
+        print("\n" + "="*50)
+        print("Execution completed successfully!")
+        print("="*50 + "\n")
+        
+        return result
 
     except Exception as e:
-        raise Exception(f"An error occurred while training the crew: {e}")
+        print("\nERROR:")
+        print("-"*50)
+        print(f"An error occurred while running the crew: {e}")
+        print("\n" + "="*50)
+        raise
 
-def replay():
-    """
-    Replay the crew execution from a specific task.
-    """
-    try:
-        AgenticRag().crew().replay(task_id=sys.argv[1])
 
-    except Exception as e:
-        raise Exception(f"An error occurred while replaying the crew: {e}")
 
-def test():
-    """
-    Test the crew execution and returns the results.
-    """
-    inputs = {
-        "topic": "AI LLMs"
-    }
-    try:
-        AgenticRag().crew().test(n_iterations=int(sys.argv[1]), openai_model_name=sys.argv[2], inputs=inputs)
 
-    except Exception as e:
-        raise Exception(f"An error occurred while replaying the crew: {e}")
+
+if __name__ == "__main__":
+    run()
